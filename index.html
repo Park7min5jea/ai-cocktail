@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>AI 칵테일 추천</title>
+</head>
+<body>
+    <h2>🍸 AI 칵테일 추천 요청</h2>
+    
+    <form id="cocktailForm">
+        <label for="taste">맛 선택:</label>
+        <select id="taste" name="taste">
+            <option value="상큼">상큼</option>
+            <option value="달콤">달콤</option>
+            <option value="쓴맛">쓴맛</option>
+            <option value="부드러움">부드러움</option>
+        </select>
+        <br><br>
+
+        <label for="alcohol">도수 선택:</label>
+        <select id="alcohol" name="alcohol">
+            <option value="낮음">낮음</option>
+            <option value="중간">중간</option>
+            <option value="높음">높음</option>
+        </select>
+        <br><br>
+
+        <button type="submit">AI 추천받기</button>
+    </form>
+
+    <h3>추천 결과:</h3>
+    <div id="result"></div>
+
+    <script>
+        const form = document.getElementById('cocktailForm');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const taste = document.getElementById('taste').value;
+            const alcohol = document.getElementById('alcohol').value;
+
+            const response = await fetch('/recommend', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({taste, alcohol})
+            });
+
+            const data = await response.json();
+            resultDiv.textContent = data.recommendation;
+        });
+    </script>
+</body>
+</html>
