@@ -9,20 +9,22 @@ document.addEventListener("DOMContentLoaded", () => {
         const alcohol = document.getElementById("alcohol").value;
 
         try {
-            // ✅ 요청 URL을 "/api/recommend"로 변경해야 함!
-            const response = await fetch("https://ai-cocktail-sage.vercel.app/api/recommend", {  
+            // ✅ API 요청 경로 수정 -> "/api/recommend"
+            const response = await fetch("/api/recommend", {  
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ taste, alcohol })
             });
 
-            if (!response.ok) throw new Error("서버 오류 발생");
+            if (!response.ok) {
+                throw new Error("서버 오류 발생");
+            }
 
             const data = await response.json();
-            resultDiv.textContent = data.recommendation;
+            resultDiv.textContent = `추천 칵테일: ${data.recommendation}`;
         } catch (error) {
             resultDiv.textContent = "추천을 가져오는 중 오류 발생!";
-            console.error(error);
+            console.error("오류 발생:", error);
         }
     });
 });
