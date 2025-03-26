@@ -1,55 +1,65 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>AI 칵테일 추천</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 칵테일 추천</title>
 </head>
 <body>
-    <h2>🍸 AI 칵테일 추천 요청</h2>
-    
-    <form id="cocktailForm">
-        <label for="taste">맛 선택:</label>
-        <select id="taste" name="taste">
-            <option value="상큼">상큼</option>
-            <option value="달콤">달콤</option>
-            <option value="쓴맛">쓴맛</option>
-            <option value="부드러움">부드러움</option>
-        </select>
-        <br><br>
+  <h1>🍸 AI 카크테일 추천 요청</h1>
 
-        <label for="alcohol">도수 선택:</label>
-        <select id="alcohol" name="alcohol">
-            <option value="낮음">낮음</option>
-            <option value="중간">중간</option>
-            <option value="높음">높음</option>
-        </select>
-        <br><br>
+  <form id="cocktailForm">
+    <label for="taste">맛 선택:</label>
+    <select id="taste">
+      <option value="달콤">달콤</option>
+      <option value="상큼">상큼</option>
+      <option value="쓴">쓴</option>
+    </select>
 
-        <button type="submit">AI 추천받기</button>
-    </form>
+    <br />
 
-    <h3>추천 결과:</h3>
-    <div id="result"></div>
+    <label for="alcohol">도수 선택:</label>
+    <select id="alcohol">
+      <option value="낮음">낮음</option>
+      <option value="중간">중간</option>
+      <option value="높음">높음</option>
+    </select>
 
-    <script>
-        const form = document.getElementById('cocktailForm');
-        const resultDiv = document.getElementById('result');
+    <br />
+    <button type="submit">AI 추천받기</button>
+  </form>
 
-        form.addEventListener('submit', async (event) => {
-            event.preventDefault();
+  <h3>추천 결과:</h3>
+  <div id="result"></div>
 
-            const taste = document.getElementById('taste').value;
-            const alcohol = document.getElementById('alcohol').value;
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("cocktailForm");
+      const resultDiv = document.getElementById("result");
 
-            const response = await fetch('/recommend', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({taste, alcohol})
-            });
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-            const data = await response.json();
-            resultDiv.textContent = data.recommendation;
-        });
-    </script>
+        const taste = document.getElementById("taste").value;
+        const alcohol = document.getElementById("alcohol").value;
+
+        try {
+          const response = await fetch("/api/recommend", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ taste, alcohol })
+          });
+
+          if (!response.ok) throw new Error("서버 오류 발생");
+
+          const data = await response.json();
+          resultDiv.textContent = data.recommendation;
+        } catch (error) {
+          resultDiv.textContent = "추천을 가져오는 중 오류 발생!";
+          console.error(error);
+        }
+      });
+    });
+  </script>
 </body>
 </html>

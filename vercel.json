@@ -1,15 +1,5 @@
 {
-    "version": 2,
-    "functions": {
-      "api/recommend.js": {
-        "runtime": "nodejs18.x"
-      }
-    },
-    "routes": [
-      {
-        "src": "/api/recommend",
-        "dest": "/api/recommend.js"
-      }
-    ]
-  }
-  
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" }
+  ]
+}
