@@ -6,7 +6,10 @@
       }
     },
     "routes": [
-      { "src": "/api/recommend", "dest": "/api/recommend.js" }
+      {
+        "src": "/api/recommend",
+        "dest": "/api/recommend.js"
+      }
     ]
   }
   
